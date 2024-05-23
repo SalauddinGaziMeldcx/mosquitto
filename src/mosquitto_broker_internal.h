@@ -829,12 +829,7 @@ void session_expiry__send_all(void);
 /* ============================================================
  * Signals
  * ============================================================ */
-void handle_sigint(int signal);
-void handle_sigusr1(int signal);
-void handle_sigusr2(int signal);
-#ifdef SIGHUP
-void handle_sighup(int signal);
-#endif
+void signal__setup(void);
 
 /* ============================================================
  * Window service and signal related functions

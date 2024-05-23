@@ -408,23 +408,6 @@ static void listeners__stop(void)
 }
 
 
-static void signal__setup(void)
-{
-	signal(SIGINT, handle_sigint);
-	signal(SIGTERM, handle_sigint);
-#ifdef SIGHUP
-	signal(SIGHUP, handle_sighup);
-#endif
-#ifndef WIN32
-	signal(SIGUSR1, handle_sigusr1);
-	signal(SIGUSR2, handle_sigusr2);
-	signal(SIGPIPE, SIG_IGN);
-#endif
-#ifdef WIN32
-	CreateThread(NULL, 0, SigThreadProc, NULL, 0, NULL);
-#endif
-}
-
 
 static int pid__write(void)
 {
@@ -444,7 +427,7 @@ static int pid__write(void)
 }
 
 
-int main(int argc, char *argv[])
+int mosquitto_broker_main(int argc, char *argv[])
 {
 	struct mosquitto__config config;
 #ifdef WITH_BRIDGE

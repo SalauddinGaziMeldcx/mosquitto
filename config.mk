@@ -92,6 +92,10 @@ CLIENT_STATIC_LDADD:=
 # Build shared libraries
 WITH_SHARED_LIBRARIES:=yes
 
+# Build the broker additionally as a library, which can be used to
+# embedd a broker into an own executable.
+WITH_EMBEDD_BROKER:=no
+
 # Build with async dns lookup support for bridges (temporary). Requires glibc.
 #WITH_ADNS:=yes
 
@@ -341,6 +345,13 @@ ifeq ($(WITH_WEBSOCKETS),yes)
 	BROKER_CPPFLAGS:=$(BROKER_CPPFLAGS) -DWITH_WEBSOCKETS
 	BROKER_LDADD:=$(BROKER_LDADD) -lwebsockets
 endif
+
+ifeq ($(WITH_EMBEDD_BROKER), yes)
+ifeq ($(WITH_SHARED_LIBRARIES),yes)
+	BROKER_CFLAGS+=-fPIC
+endif
+endif
+
 
 INSTALL?=install
 prefix?=/usr/local
