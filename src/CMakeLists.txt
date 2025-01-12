@@ -103,6 +103,9 @@ add_executable(mosquitto ${BROKER_SRC} main.c signals.c)
 
 if (WITH_EMBEDD_BROKER)
 	add_library(libmosquitto_broker SHARED ${BROKER_SRC} embedd_broker.c)
+	if (WITH_STATIC_LIBRARIES)
+		add_library(libmosquitto_broker_static STATIC ${BROKER_SRC} embedd_broker.c)
+	endif()
 endif()
       
 broker_include_directories(PUBLIC "${mosquitto_SOURCE_DIR}")
@@ -297,6 +300,17 @@ if (WITH_EMBEDD_BROKER)
 		SOVERSION 1
 		POSITION_INDEPENDENT_CODE 1
 	)
+	
+	if (WITH_STATIC_LIBRARIES)
+		set_target_properties(libmosquitto_broker_static PROPERTIES
+		OUTPUT_NAME mosquitto_broker_static
+		VERSION ${VERSION}
+		SOVERSION 1
+		POSITION_INDEPENDENT_CODE 1
+	)
+	endif()
+	
+	
 	if(APPLE)
 		set_target_properties(libmosquitto_broker PROPERTIES
 			LINK_FLAGS "-exported_symbols_list ${mosquitto_SOURCE_DIR}/src/embedd-broker-macos.syms"
@@ -317,4 +331,9 @@ if (WITH_EMBEDD_BROKER)
 		ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 		LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 	)
+	
+	if (WITH_STATIC_LIBRARIES)
+		install(TARGETS libmosquitto_broker_static ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+	endif()
+
 endif()
