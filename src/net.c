@@ -62,6 +62,7 @@ Contributors:
 #ifdef WITH_TLS
 #  include "tls_mosq.h"
 #  include <openssl/err.h>
+#  include <openssl/x509_vfy.h>
 static int tls_ex_index_context = -1;
 static int tls_ex_index_listener = -1;
 #endif
@@ -333,6 +334,11 @@ int net__tls_server_ctx(struct mosquitto__listener *listener)
 		log__printf(NULL, MOSQ_LOG_ERR, "Error: Unable to create TLS context.");
 		return MOSQ_ERR_TLS;
 	}
+
+	 X509_VERIFY_PARAM* param = X509_VERIFY_PARAM_new();
+	 X509_VERIFY_PARAM_set_flags(param, X509_V_FLAG_NO_CHECK_TIME);
+	 SSL_CTX_set1_param(listener->ssl_ctx, param);
+	 X509_VERIFY_PARAM_free(param);
 
 #ifdef SSL_OP_NO_TLSv1_3
 	if(db.config->per_listener_settings){
