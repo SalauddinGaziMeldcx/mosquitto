@@ -261,7 +261,7 @@ endif (WIN32)
 
 if (WITH_WEBSOCKETS)
 	if (STATIC_WEBSOCKETS)
-		broker_link_libraries(PRIVATE websockets_static)
+		broker_link_libraries(PRIVATE websockets)
 		if (WIN32)
 			broker_link_libraries(PRIVATE iphlpapi)
 			target_link_directories(mosquitto ${mosquitto_SOURCE_DIR})
