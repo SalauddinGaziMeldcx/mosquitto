@@ -484,8 +484,8 @@ int net__load_certificates(struct mosquitto__listener *listener)
 		SSL_CTX_set_verify(listener->ssl_ctx, SSL_VERIFY_NONE, client_certificate_verify);
 	}
 
-	if (db->tls_pw_callback) {
-		SSL_CTX_set_default_passwd_cb(listener->ssl_ctx, db->tls_pw_callback);
+	if (db.tls_pw_callback) {
+		SSL_CTX_set_default_passwd_cb(listener->ssl_ctx, db.tls_pw_callback);
 		SSL_CTX_set_default_passwd_cb_userdata(listener->ssl_ctx, listener);
 	}
 
