@@ -33,7 +33,7 @@ extern "C" {
 #	define mosq_EXPORT
 #endif
 
-mosq_EXPORT int mosquitto_broker_main(int argc, char *argv[]);
+mosq_EXPORT mosquitto_broker_main(int argc, char* argv[], int sendBuffer, int receiveBuffer);
 
 mosq_EXPORT void mosquitto_broker_stop();
   

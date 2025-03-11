@@ -427,7 +427,7 @@ static int pid__write(void)
 }
 
 
-int mosquitto_broker_main(int argc, char *argv[])
+int mosquitto_broker_main(int argc, char *argv[], int sendBuffer, int receiveBuffer)
 {
 	struct mosquitto__config config;
 #ifdef WITH_BRIDGE
@@ -484,6 +484,9 @@ int mosquitto_broker_main(int argc, char *argv[])
 	rc = config__parse_args(&config, argc, argv);
 	if(rc != MOSQ_ERR_SUCCESS) return rc;
 	db.config = &config;
+
+	db.sendBuffer = sendBuffer;
+	db.receiveBuffer = receiveBuffer;
 
 	/* Drop privileges permanently immediately after the config is loaded.
 	 * This requires the user to ensure that all certificates, log locations,

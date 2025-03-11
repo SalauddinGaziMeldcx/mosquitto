@@ -476,6 +476,10 @@ struct mosquitto_db{
 	int epollfd;
 #endif
 	struct mosquitto_message_v5 *plugin_msgs;
+
+	/* Socket option buffer */
+	int sendBuffer;
+	int receiveBuffer;
 };
 
 enum mosquitto__bridge_direction{

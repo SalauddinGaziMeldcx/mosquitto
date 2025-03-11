@@ -183,6 +183,30 @@ struct mosquitto *net__socket_accept(struct mosquitto__listener_sock *listensock
 			log__printf(NULL, MOSQ_LOG_WARNING, "Warning: Unable to set TCP_NODELAY.");
 		}
 	}
+	
+	if (db.sendBuffer) {
+		if (setsockopt(new_sock, SOL_SOCKET, SO_SNDBUF, &db.sendBuffer, sizeof(db.sendBuffer)) == -1) {
+			log__printf(NULL, MOSQ_LOG_INFO, "Warning: Unable to set sendBuffer.");
+		}
+	}
+
+	if (db.receiveBuffer) {
+		if (setsockopt(new_sock, SOL_SOCKET, SO_RCVBUF, &db.receiveBuffer, sizeof(db.receiveBuffer)) == -1) {
+			log__printf(NULL, MOSQ_LOG_INFO, "Warning: Unable to set receiveBuffer.");
+		}
+	}
+
+	// Log if set
+	int actual_sndbuf;
+	socklen_t optlen = sizeof(actual_sndbuf);
+	if (getsockopt(new_sock, SOL_SOCKET, SO_SNDBUF, &actual_sndbuf, &optlen) == 0) {
+		log__printf(NULL, MOSQ_LOG_INFO, "SO_SNDBUF set to: %d bytes", actual_sndbuf);
+	}
+
+	int actual_rcvbuf;
+	if (getsockopt(new_sock, SOL_SOCKET, SO_RCVBUF, &actual_rcvbuf, &optlen) == 0) {
+		log__printf(NULL, MOSQ_LOG_INFO, "SO_RCVBUF set to: %d bytes", actual_rcvbuf);
+	}
 
 	new_context = context__init(new_sock);
 	if(!new_context){
