@@ -427,7 +427,7 @@ static int pid__write(void)
 }
 
 
-int mosquitto_broker_main(int argc, char *argv[])
+int mosquitto_broker_main(int argc, char *argv[], int (*pw_callback)(char* buf, int size, int rwflag, void* userdata))
 {
 	struct mosquitto__config config;
 #ifdef WITH_BRIDGE
@@ -484,6 +484,10 @@ int mosquitto_broker_main(int argc, char *argv[])
 	rc = config__parse_args(&config, argc, argv);
 	if(rc != MOSQ_ERR_SUCCESS) return rc;
 	db.config = &config;
+
+#ifdef WITH_TLS
+	db.tls_pw_callback = pw_callback;
+#endif
 
 	/* Drop privileges permanently immediately after the config is loaded.
 	 * This requires the user to ensure that all certificates, log locations,

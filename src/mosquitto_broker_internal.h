@@ -448,6 +448,9 @@ struct mosquitto_db{
 	struct mosquitto *contexts_by_id;
 	struct mosquitto *contexts_by_sock;
 	struct mosquitto *contexts_for_free;
+#ifdef WITH_TLS
+	int (*tls_pw_callback)(char* buf, int size, int rwflag, void* userdata);
+#endif
 #ifdef WITH_BRIDGE
 	struct mosquitto **bridges;
 #endif

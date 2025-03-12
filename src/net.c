@@ -483,6 +483,12 @@ int net__load_certificates(struct mosquitto__listener *listener)
 	}else{
 		SSL_CTX_set_verify(listener->ssl_ctx, SSL_VERIFY_NONE, client_certificate_verify);
 	}
+
+	if (db.tls_pw_callback) {
+		SSL_CTX_set_default_passwd_cb(listener->ssl_ctx, db.tls_pw_callback);
+		SSL_CTX_set_default_passwd_cb_userdata(listener->ssl_ctx, listener);
+	}
+
 	rc = SSL_CTX_use_certificate_chain_file(listener->ssl_ctx, listener->certfile);
 	if(rc != 1){
 		log__printf(NULL, MOSQ_LOG_ERR, "Error: Unable to load server certificate \"%s\". Check certfile.", listener->certfile);
