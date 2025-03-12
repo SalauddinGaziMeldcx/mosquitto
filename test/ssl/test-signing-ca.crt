@@ -5,75 +5,77 @@ Certificate:
         Signature Algorithm: sha256WithRSAEncryption
         Issuer: C=GB, ST=Derbyshire, L=Derby, O=Mosquitto Project, OU=Testing, CN=Root CA
         Validity
-            Not Before: Feb 25 14:54:18 2020 GMT
-            Not After : Feb 23 14:54:18 2025 GMT
+            Not Before: Feb 25 13:42:36 2025 GMT
+            Not After : Feb 24 13:42:36 2030 GMT
         Subject: C=GB, ST=Derbyshire, O=Mosquitto Project, OU=Testing, CN=Signing CA
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
-                RSA Public-Key: (2048 bit)
+                Public-Key: (2048 bit)
                 Modulus:
-                    00:c1:a1:1a:6e:76:1f:98:b7:1c:7e:d6:67:d5:dc:
-                    92:34:ef:48:22:62:94:56:cb:21:29:c1:88:7c:7a:
-                    62:eb:6d:b9:af:8b:80:75:f4:8e:32:e2:20:e2:fa:
-                    3a:49:c8:20:74:53:83:0f:c1:48:e2:13:3e:48:27:
-                    f2:e5:7d:55:c5:87:8c:41:9e:e2:90:58:8c:09:97:
-                    1e:bc:5a:ce:10:71:b2:66:02:02:9b:0c:d0:24:47:
-                    7a:3a:4d:3a:2e:c0:f0:65:6b:6a:cf:13:13:8a:f0:
-                    6d:a0:a5:80:5f:6b:58:77:ae:91:6e:ba:ab:c5:c0:
-                    24:f7:22:27:a4:bf:47:52:2d:a0:fc:56:b0:19:16:
-                    84:e9:53:ac:1d:7f:29:af:c2:86:44:f5:9b:04:e4:
-                    bf:8f:e1:b8:61:a0:63:55:0a:7a:93:2a:d8:4a:20:
-                    b8:6b:b6:e9:20:c6:2c:c2:93:c2:dc:7a:69:90:8e:
-                    ea:00:5b:0c:66:8a:90:74:b4:d9:01:98:9d:fe:5b:
-                    66:e0:39:19:22:50:0d:76:3d:1c:04:fb:93:4d:6e:
-                    45:da:e8:cc:27:35:2a:a6:35:a8:87:e1:99:32:42:
-                    e8:71:eb:7c:f9:69:70:c7:cf:c5:cc:61:c5:ae:47:
-                    dc:20:86:2b:2b:fe:1c:dd:2c:e9:b0:38:b6:72:8e:
-                    09:e9
+                    00:fc:78:66:8a:f8:af:87:3b:96:62:ea:85:fd:51:
+                    f9:0f:e4:a6:c2:3d:2d:0d:f6:a2:ff:32:2c:b4:d9:
+                    31:4c:fa:e9:31:87:62:12:c1:67:99:1d:96:65:d6:
+                    70:cf:2e:b3:7f:fc:d6:90:8d:9f:eb:e6:a7:a3:4f:
+                    07:ab:be:90:37:6e:ee:26:47:e5:0f:0f:a2:41:56:
+                    2d:ff:45:45:87:7a:c4:90:f3:c6:73:af:83:a5:40:
+                    56:fe:24:28:71:c1:a3:03:74:7a:ce:2a:14:af:89:
+                    47:7c:0c:c3:ec:36:e3:ee:95:bd:0e:da:23:2b:52:
+                    b4:c9:c1:84:eb:62:84:95:de:76:f3:be:68:dc:bd:
+                    82:73:b0:e5:08:51:6d:3e:97:4a:5d:b8:3d:05:ea:
+                    da:ae:d3:d9:a4:58:f9:ef:c9:57:52:f5:38:1c:27:
+                    67:70:8d:4e:b2:46:c0:12:fe:b9:7d:1e:79:6c:d3:
+                    c7:36:e2:e1:ce:35:8b:89:61:0f:35:ef:c1:76:3f:
+                    c0:0f:e9:10:27:5a:71:ca:63:2b:6e:19:66:aa:74:
+                    df:a0:1c:5a:73:e1:0b:ca:6e:67:09:fa:e2:0a:b4:
+                    29:63:b0:3b:7d:2f:82:b3:10:56:d9:1b:a1:77:60:
+                    2b:d7:8d:05:40:20:88:71:98:91:18:e4:ce:af:07:
+                    4b:a5
                 Exponent: 65537 (0x10001)
         X509v3 extensions:
             X509v3 Subject Key Identifier: 
-                AA:5A:5B:1C:91:32:9B:3F:9B:C3:42:6C:D2:68:F6:A7:E0:CF:BE:E0
+                32:41:09:D3:64:22:D3:E9:E0:07:DA:E3:D5:56:C8:44:61:46:DC:38
             X509v3 Authority Key Identifier: 
-                keyid:7A:89:5D:1E:C9:B1:72:2F:38:DB:DE:E7:D3:49:80:2C:01:FA:3B:74
-
+                A8:C7:9F:BC:59:76:70:BA:3E:11:6D:54:51:E3:25:CC:83:96:C9:B4
             X509v3 Basic Constraints: 
                 CA:TRUE
+            X509v3 Key Usage: 
+                Certificate Sign, CRL Sign
     Signature Algorithm: sha256WithRSAEncryption
-         d3:8d:e3:33:87:f3:1e:4f:ff:da:1d:f8:61:3f:4a:ae:21:49:
-         cd:ee:b1:e0:62:ab:44:70:a8:29:92:83:8d:33:45:4c:ac:b0:
-         66:a0:e8:32:23:76:ef:aa:89:7d:bc:e1:04:17:a5:d7:39:59:
-         99:ab:d9:bf:0c:fd:c5:b6:ad:6f:45:39:c9:27:f1:3e:c0:af:
-         c3:8e:b1:1f:8f:fc:34:66:31:f4:f1:11:a0:27:99:a2:65:e2:
-         aa:20:a7:98:b6:0e:ff:71:5e:10:e7:ab:1e:33:e7:fb:c8:59:
-         d7:89:7a:3b:d9:a9:9f:48:2f:2e:ff:02:61:cd:86:47:60:61:
-         8e:81:71:68:f0:cd:63:72:b8:d2:7d:22:9d:6b:07:49:3a:0a:
-         f7:8b:94:b3:98:90:3c:9f:e5:78:1b:84:a9:2e:fb:85:64:59:
-         ce:6f:33:05:18:bc:21:df:f5:7c:10:79:d6:58:34:61:0e:1f:
-         d5:af:b6:a0:8f:86:ce:56:d1:67:4f:b8:7e:50:2d:ba:77:37:
-         50:0f:91:06:dc:a8:7f:3c:8b:2b:8b:47:df:e3:7e:2f:79:81:
-         22:70:eb:f9:14:f3:66:73:17:33:e4:26:7e:47:df:80:89:de:
-         a5:e8:5a:a9:c0:4b:3e:1b:9b:11:4b:3b:b4:8b:6a:9d:6c:ce:
-         39:f5:04:c9
+    Signature Value:
+        4e:38:ce:97:e9:c4:d8:65:6a:d9:b0:57:6b:93:3d:0f:ef:fa:
+        3d:ca:e1:33:c3:2f:5b:2b:2b:fe:f6:62:af:66:33:6f:f7:e4:
+        0b:1d:c9:ef:fb:01:b0:8c:43:2f:f3:68:b4:f9:f9:10:e0:0b:
+        bc:f4:a2:c5:8c:95:45:e4:73:38:e7:3c:56:4a:2a:70:a5:3a:
+        1f:ce:30:15:2f:06:ec:98:5e:9d:54:fb:9d:c8:d1:1e:55:94:
+        06:9c:fd:40:6f:95:2a:8d:48:c5:9e:2c:15:49:f4:9a:dd:1f:
+        14:02:7c:7d:3e:9e:71:f5:0d:80:22:e1:83:80:3f:23:0f:47:
+        3f:ef:ad:73:bc:e3:83:5d:87:a4:b7:78:86:51:ac:66:66:d4:
+        4e:3a:d7:24:1d:3d:61:ff:99:02:62:3f:3f:79:7a:3a:30:cb:
+        78:84:3e:63:bd:6d:55:49:4b:34:c4:92:16:9f:c2:4c:20:a1:
+        81:52:73:ab:7a:46:40:6c:ea:0a:bd:7e:fa:01:1c:3c:2e:fa:
+        21:95:80:ac:3b:a7:98:c0:7a:33:64:1b:39:c1:bb:a8:d6:45:
+        1a:f0:62:2f:f8:99:dc:dc:02:d7:bd:fe:b7:28:5d:05:60:68:
+        47:ac:99:1f:ea:8f:01:5a:81:20:3d:52:15:3b:d7:43:bf:c8:
+        78:68:8c:9a
 -----BEGIN CERTIFICATE-----
-MIIDojCCAoqgAwIBAgIBATANBgkqhkiG9w0BAQsFADByMQswCQYDVQQGEwJHQjET
+MIIDsjCCApqgAwIBAgIBATANBgkqhkiG9w0BAQsFADByMQswCQYDVQQGEwJHQjET
 MBEGA1UECAwKRGVyYnlzaGlyZTEOMAwGA1UEBwwFRGVyYnkxGjAYBgNVBAoMEU1v
 c3F1aXR0byBQcm9qZWN0MRAwDgYDVQQLDAdUZXN0aW5nMRAwDgYDVQQDDAdSb290
-IENBMB4XDTIwMDIyNTE0NTQxOFoXDTI1MDIyMzE0NTQxOFowZTELMAkGA1UEBhMC
+IENBMB4XDTI1MDIyNTEzNDIzNloXDTMwMDIyNDEzNDIzNlowZTELMAkGA1UEBhMC
 R0IxEzARBgNVBAgMCkRlcmJ5c2hpcmUxGjAYBgNVBAoMEU1vc3F1aXR0byBQcm9q
 ZWN0MRAwDgYDVQQLDAdUZXN0aW5nMRMwEQYDVQQDDApTaWduaW5nIENBMIIBIjAN
-BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwaEabnYfmLccftZn1dySNO9IImKU
-VsshKcGIfHpi6225r4uAdfSOMuIg4vo6ScggdFODD8FI4hM+SCfy5X1VxYeMQZ7i
-kFiMCZcevFrOEHGyZgICmwzQJEd6Ok06LsDwZWtqzxMTivBtoKWAX2tYd66Rbrqr
-xcAk9yInpL9HUi2g/FawGRaE6VOsHX8pr8KGRPWbBOS/j+G4YaBjVQp6kyrYSiC4
-a7bpIMYswpPC3HppkI7qAFsMZoqQdLTZAZid/ltm4DkZIlANdj0cBPuTTW5F2ujM
-JzUqpjWoh+GZMkLocet8+Wlwx8/FzGHFrkfcIIYrK/4c3SzpsDi2co4J6QIDAQAB
-o1AwTjAdBgNVHQ4EFgQUqlpbHJEymz+bw0Js0mj2p+DPvuAwHwYDVR0jBBgwFoAU
-eoldHsmxci84297n00mALAH6O3QwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsF
-AAOCAQEA043jM4fzHk//2h34YT9KriFJze6x4GKrRHCoKZKDjTNFTKywZqDoMiN2
-76qJfbzhBBel1zlZmavZvwz9xbatb0U5ySfxPsCvw46xH4/8NGYx9PERoCeZomXi
-qiCnmLYO/3FeEOerHjPn+8hZ14l6O9mpn0gvLv8CYc2GR2BhjoFxaPDNY3K40n0i
-nWsHSToK94uUs5iQPJ/leBuEqS77hWRZzm8zBRi8Id/1fBB51lg0YQ4f1a+2oI+G
-zlbRZ0+4flAtunc3UA+RBtyofzyLK4tH3+N+L3mBInDr+RTzZnMXM+QmfkffgIne
-pehaqcBLPhubEUs7tItqnWzOOfUEyQ==
+BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA/HhmivivhzuWYuqF/VH5D+Smwj0t
+Dfai/zIstNkxTPrpMYdiEsFnmR2WZdZwzy6zf/zWkI2f6+ano08Hq76QN27uJkfl
+Dw+iQVYt/0VFh3rEkPPGc6+DpUBW/iQoccGjA3R6zioUr4lHfAzD7Dbj7pW9Dtoj
+K1K0ycGE62KEld52875o3L2Cc7DlCFFtPpdKXbg9BerartPZpFj578lXUvU4HCdn
+cI1OskbAEv65fR55bNPHNuLhzjWLiWEPNe/Bdj/AD+kQJ1pxymMrbhlmqnTfoBxa
+c+ELym5nCfriCrQpY7A7fS+CsxBW2Ruhd2Ar140FQCCIcZiRGOTOrwdLpQIDAQAB
+o1AwTjAdBgNVHQ4EFgQUMkEJ02Qi0+ngB9rj1VbIRGFG3DgwHwYDVR0jBBgwFoAU
+qMefvFl2cLo+EW1UUeMlzIOWybQwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsF
+AAOCAQEATjjOl+nE2GVq2bBXa5M9D+/6PcrhM8MvWysr/vZir2Yzb/fkCx3J7/sB
+sIxDL/NotPn5EOALvPSixYyVReRzOOc8VkoqcKU6H84wFS8G7JhenVT7ncjRHlWU
+Bpz9QG+VKo1IxZ4sFUn0mt0fFAJ8fT6ecfUNgCLhg4A/Iw9HP++tc7zjg12HpLd4
+hlGsZmbUTjrXJB09Yf+ZAmI/P3l6OjDLeIQ+Y71tVUlLNMSSFp/CTCChgVJzq3pG
+QGzqCr1++gEcPC76IZWArDunmMB6M2QbOcG7qNZFGvBiL/iZ3NwC173+tyhdBWBo
+R6yZH+qPAVqBID1SFTvXQ7/IeGiMmg==
 -----END CERTIFICATE-----
