@@ -2,9 +2,7 @@ include ../config.mk
 
 .PHONY: all install uninstall clean reallyclean
 
-all : mosquitto
-
-OBJS=	mosquitto.o \
+COMMON_OBJS=	mosquitto.o \
 		alias_mosq.o \
 		bridge.o \
 		bridge_topic.o \
@@ -66,7 +64,6 @@ OBJS=	mosquitto.o \
 		send_unsubscribe.o \
 		service.o \
 		session_expiry.o \
-		signals.o \
 		strings_mosq.o \
 		subs.o \
 		sys_tree.o \
@@ -81,7 +78,36 @@ OBJS=	mosquitto.o \
 		will_mosq.o \
 		xtreport.o
 
-mosquitto : ${OBJS}
+BROKER_OBJS=${COMMON_OBJS} \
+	main.o \
+	signals.o
+
+ifeq ($(WITH_EMBEDD_BROKER), yes)
+
+all : mosquitto libmosquitto_broker.so
+
+EMBED_OBJS=${COMMON_OBJS} \
+	embedd_broker.o
+
+LOCAL_EMBEDD_LDFLAGS=${BROKER_LDADD} -Wl,--version-script=embedd-broker.version
+
+libmosquitto_broker.a : ${EMBED_OBJS} ${OBJS_EXTERNAL}
+	${CROSS_COMPILE}$(AR) cr $@ $^
+
+ifeq ($(WITH_SHARED_LIBRARIES),yes)
+libmosquitto_broker.so.${SOVERSION} : ${EMBED_OBJS} ${OBJS_EXTERNAL}
+	${CROSS_COMPILE}$(CC) $(LOCAL_EMBEDD_LDFLAGS) -shared $^ -o $@ ${LOCAL_LDADD}
+libmosquitto_broker.so : libmosquitto_broker.so.${SOVERSION}
+	if [ ! -h libmosquitto_broker.so ]; then ln -sf libmosquitto_broker.so.${SOVERSION} libmosquitto_broker.so; fi
+endif
+
+else
+
+all : mosquitto
+
+endif
+
+mosquitto : ${BROKER_OBJS}
 	${CROSS_COMPILE}${CC} ${BROKER_LDFLAGS} $^ -o $@ $(BROKER_LDADD)
 
 mosquitto.o : mosquitto.c mosquitto_broker_internal.h
@@ -109,6 +135,9 @@ control.o : control.c mosquitto_broker_internal.h
 	${CROSS_COMPILE}${CC} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 database.o : database.c mosquitto_broker_internal.h
+	${CROSS_COMPILE}${CC} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
+
+embedd_broker.o : embedd_broker.c mosquitto_broker_internal.h Makefile
 	${CROSS_COMPILE}${CC} $(BROKER_CPPFLAGS) $(BROKER_CFLAGS) -c $< -o $@
 
 handle_auth.o : handle_auth.c mosquitto_broker_internal.h
@@ -324,14 +353,27 @@ install : all
 	$(INSTALL) -d "${DESTDIR}$(prefix)/include"
 	$(INSTALL) ../include/mosquitto_broker.h "${DESTDIR}${prefix}/include/mosquitto_broker.h"
 	$(INSTALL) ../include/mosquitto_plugin.h "${DESTDIR}${prefix}/include/mosquitto_plugin.h"
+ifeq ($(WITH_EMBEDD_BROKER),yes)
+	$(INSTALL) ${STRIP_OPTS} libmosquitto_broker.so.${SOVERSION} "${DESTDIR}${libdir}/libmosquitto_broker.so.${SOVERSION}"
+	ln -sf libmosquitto_broker.so.${SOVERSION} "${DESTDIR}${libdir}/libmosquitto_broker.so"
+ifeq ($(WITH_STATIC_LIBRARIES),yes)
+	$(INSTALL) ${STRIP_OPTS} libmosquitto_broker.a "${DESTDIR}${libdir}/libmosquitto_broker.a"
+endif
+	$(INSTALL) -d "${DESTDIR}$(prefix)/include/mosquitto"
+	$(INSTALL) include/mosquitto/embedded_broker.h "${DESTDIR}${prefix}/include/mosquitto/"
+endif
 
 uninstall :
 	-rm -f "${DESTDIR}${prefix}/sbin/mosquitto"
 	-rm -f "${DESTDIR}${prefix}/include/mosquitto_broker.h"
 	-rm -f "${DESTDIR}${prefix}/include/mosquitto_plugin.h"
+	-rm -f "${DESTDIR}${libdir}/libmosquitto_broker.so.${SOVERSION}"
+	-rm -f "${DESTDIR}${libdir}/libmosquitto_broker.so"
+	-rm -f "${DESTDIR}${libdir}/libmosquitto_broker.a"
+	-rm -f "${DESTDIR}${prefix}/include/mosquitto/embedded_broker.h"
 
 clean :
-	-rm -f *.o mosquitto *.gcda *.gcno
+	-rm -f *.o mosquitto libmosquitto_broker.a libmosquitto_broker.so.${VERSION} *.gcda *.gcno 
 
 reallyclean : clean
 	-rm -rf *.orig *.db

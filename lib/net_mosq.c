@@ -59,6 +59,7 @@ Contributors:
 #include <openssl/err.h>
 #include <openssl/ui.h>
 #include <tls_mosq.h>
+#include <openssl/x509_vfy.h>
 #endif
 
 #ifdef WITH_BROKER
@@ -683,6 +684,11 @@ static int net__init_ssl_ctx(struct mosquitto *mosq)
 				net__print_ssl_error(mosq);
 				return MOSQ_ERR_TLS;
 			}
+
+			 X509_VERIFY_PARAM* param = X509_VERIFY_PARAM_new();
+			 X509_VERIFY_PARAM_set_flags(param, X509_V_FLAG_NO_CHECK_TIME);
+			 SSL_CTX_set1_param(mosq->ssl_ctx, param);
+			 X509_VERIFY_PARAM_free(param);
 		}
 
 #ifdef SSL_OP_NO_TLSv1_3

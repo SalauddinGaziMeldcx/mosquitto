@@ -62,6 +62,7 @@ Contributors:
 #ifdef WITH_TLS
 #  include "tls_mosq.h"
 #  include <openssl/err.h>
+#  include <openssl/x509_vfy.h>
 static int tls_ex_index_context = -1;
 static int tls_ex_index_listener = -1;
 #endif
@@ -336,6 +337,11 @@ int net__tls_server_ctx(struct mosquitto__listener *listener)
 		return MOSQ_ERR_TLS;
 	}
 
+	 X509_VERIFY_PARAM* param = X509_VERIFY_PARAM_new();
+	 X509_VERIFY_PARAM_set_flags(param, X509_V_FLAG_NO_CHECK_TIME);
+	 SSL_CTX_set1_param(listener->ssl_ctx, param);
+	 X509_VERIFY_PARAM_free(param);
+
 #ifdef SSL_OP_NO_TLSv1_3
 	if(db.config->per_listener_settings){
 		if(listener->security_options.psk_file){
@@ -479,6 +485,12 @@ int net__load_certificates(struct mosquitto__listener *listener)
 	}else{
 		SSL_CTX_set_verify(listener->ssl_ctx, SSL_VERIFY_NONE, client_certificate_verify);
 	}
+
+	if (db.tls_pw_callback) {
+		SSL_CTX_set_default_passwd_cb(listener->ssl_ctx, db.tls_pw_callback);
+		SSL_CTX_set_default_passwd_cb_userdata(listener->ssl_ctx, listener);
+	}
+
 	rc = SSL_CTX_use_certificate_chain_file(listener->ssl_ctx, listener->certfile);
 	if(rc != 1){
 		log__printf(NULL, MOSQ_LOG_ERR, "Error: Unable to load server certificate \"%s\". Check certfile.", listener->certfile);
