@@ -42,6 +42,7 @@ extern int run;
 /* Signal handler for SIGHUP - flag a config reload. */
 static void handle_sighup(int signal)
 {
+	log__printf(NULL, MOSQ_LOG_NOTICE, "handle_sighup %d", signal);
 	UNUSED(signal);
 
 	flag_reload = true;
@@ -51,6 +52,7 @@ static void handle_sighup(int signal)
 /* Signal handler for SIGINT and SIGTERM - just stop gracefully. */
 static void handle_sigint(int signal)
 {
+	log__printf(NULL, MOSQ_LOG_NOTICE, "handle_sigint %d", signal);
 	UNUSED(signal);
 
 	run = 0;
@@ -59,6 +61,7 @@ static void handle_sigint(int signal)
 /* Signal handler for SIGUSR1 - backup the db. */
 static void handle_sigusr1(int signal)
 {
+	log__printf(NULL, MOSQ_LOG_NOTICE, "handle_sigusr1 %d", signal);
 	UNUSED(signal);
 
 #ifdef WITH_PERSISTENCE
@@ -69,6 +72,7 @@ static void handle_sigusr1(int signal)
 /* Signal handler for SIGUSR2 - print subscription / retained tree. */
 static void handle_sigusr2(int signal)
 {
+	log__printf(NULL, MOSQ_LOG_NOTICE, "handle_sigusr2 %d", signal);
 	UNUSED(signal);
 
 	flag_tree_print = true;
