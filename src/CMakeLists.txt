@@ -95,6 +95,7 @@ set(BROKER_SRC
 	../lib/send_disconnect.c
 	../lib/send_publish.c
 	send_suback.c
+    signals.c
 	../lib/send_subscribe.c
 	send_unsuback.c
 	../lib/send_unsubscribe.c
@@ -111,7 +112,7 @@ set(BROKER_SRC
 	will_delay.c
 	../lib/will_mosq.c ../lib/will_mosq.h)
 
-add_executable(mosquitto ${BROKER_SRC} main.c signals.c)
+add_executable(mosquitto ${BROKER_SRC} main.c)
 
 if (WITH_EMBEDD_BROKER)
 	add_library(libmosquitto_broker SHARED ${BROKER_SRC} embedd_broker.c)
