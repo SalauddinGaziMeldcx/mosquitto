@@ -356,6 +356,13 @@ void config__cleanup(struct mosquitto__config *config)
 	}
 }
 
+static void print_version(void)
+{
+	printf("mosquitto %s\n", VERSION);
+	printf("Copyright © 2025 Roger Light.\n");
+	printf("License EPL-2.0 OR BSD-3-Clause.\n");
+}
+
 static void print_usage(void)
 {
 	printf("mosquitto version %s\n\n", VERSION);
@@ -393,7 +400,10 @@ int config__parse_args(struct mosquitto__config *config, int argc, char *argv[])
 			config->daemon = true;
 		}else if(!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")){
 			print_usage();
-			return MOSQ_ERR_INVAL;
+			return MOSQ_ERR_UNKNOWN;
+		}else if(!strcmp(argv[i], "--version")){
+			print_version();
+			return MOSQ_ERR_UNKNOWN;
 		}else if(!strcmp(argv[i], "-p") || !strcmp(argv[i], "--port")){
 			if(i<argc-1){
 				port_tmp = atoi(argv[i+1]);
@@ -742,7 +752,7 @@ static int config__read_file_core(struct mosquitto__config *config, bool reload,
 	size_t slen;
 #ifdef WITH_TLS
 	char *kpass_sha = NULL, *kpass_sha_bin = NULL;
-	char *keyform ;
+	char *keyform;
 #endif
 
 	*lineno = 0;
@@ -2313,26 +2323,28 @@ static int config__check(struct mosquitto__config *config)
 		}
 	}
 
+#ifdef WITH_TLS
 	/* Check for missing TLS cafile/capath/certfile/keyfile */
 	for(int i=0; i<config->listener_count; i++){
-		 bool cafile = !!config->listeners[i].cafile;
-		 bool capath = !!config->listeners[i].capath;
-		 bool certfile = !!config->listeners[i].certfile;
-		 bool keyfile = !!config->listeners[i].keyfile;
+		bool cafile = !!config->listeners[i].cafile;
+		bool capath = !!config->listeners[i].capath;
+		bool certfile = !!config->listeners[i].certfile;
+		bool keyfile = !!config->listeners[i].keyfile;
 
-		 if((certfile && !keyfile) || (!certfile && keyfile)){
-			 log__printf(NULL, MOSQ_LOG_ERR, "Error: Both certfile and keyfile must be provided to enable a TLS listener.");
-			 return MOSQ_ERR_INVAL;
-		 }
-		 if(cafile && !certfile){
-			 log__printf(NULL, MOSQ_LOG_ERR, "Error: cafile specified without certfile and keyfile.");
-			 return MOSQ_ERR_INVAL;
-		 }
-		 if(capath && !certfile){
-			 log__printf(NULL, MOSQ_LOG_ERR, "Error: capath specified without certfile and keyfile.");
-			 return MOSQ_ERR_INVAL;
-		 }
+		if((certfile && !keyfile) || (!certfile && keyfile)){
+			log__printf(NULL, MOSQ_LOG_ERR, "Error: Both certfile and keyfile must be provided to enable a TLS listener.");
+			return MOSQ_ERR_INVAL;
+		}
+		if(cafile && !certfile){
+			log__printf(NULL, MOSQ_LOG_ERR, "Error: cafile specified without certfile and keyfile.");
+			return MOSQ_ERR_INVAL;
+		}
+		if(capath && !certfile){
+			log__printf(NULL, MOSQ_LOG_ERR, "Error: capath specified without certfile and keyfile.");
+			return MOSQ_ERR_INVAL;
+		}
 	}
+#endif
 	return MOSQ_ERR_SUCCESS;
 }
 

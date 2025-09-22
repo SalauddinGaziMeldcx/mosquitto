@@ -543,7 +543,7 @@ static int callback_http(
 												"Server: mosquitto\r\n"
 												"Content-Length: %u\r\n\r\n",
 												(unsigned int)filestat.st_size);
-            if(lws_write(wsi, buf, buflen, LWS_WRITE_HTTP) < 0){
+			if(lws_write(wsi, buf, buflen, LWS_WRITE_HTTP) < 0){
 				fclose(u->fptr);
 				u->fptr = NULL;
 				return -1;
@@ -711,6 +711,10 @@ void mosq_websockets_init(struct mosquitto__listener *listener, const struct mos
 	info.ssl_cert_filepath = listener->certfile;
 	info.ssl_private_key_filepath = listener->keyfile;
 	info.ssl_cipher_list = listener->ciphers;
+	/* HTTP 1 only, due to HTTP 2 issues in Firefox:
+	   https://github.com/eclipse-mosquitto/mosquitto/issues/1211
+	*/
+	info.alpn = "h1";
 #if defined(WITH_WEBSOCKETS) && LWS_LIBRARY_VERSION_NUMBER>=3001000
 	info.tls1_3_plus_cipher_list = listener->ciphers_tls13;
 #endif
@@ -723,7 +727,7 @@ void mosq_websockets_init(struct mosquitto__listener *listener, const struct mos
 	if(listener->socket_domain == AF_INET){
 		info.options |= LWS_SERVER_OPTION_DISABLE_IPV6;
 	}
-    info.max_http_header_data = conf->websockets_headers_size;
+	info.max_http_header_data = conf->websockets_headers_size;
 
 	user = mosquitto__calloc(1, sizeof(struct libws_mqtt_hack));
 	if(!user){

@@ -448,6 +448,7 @@ int mosquitto_broker_main(int argc, char *argv[], int (*pw_callback)(char* buf, 
 #endif
 	struct mosquitto *ctxt, *ctxt_tmp;
 
+	mosquitto_time_init();
 #if defined(WIN32) || defined(__CYGWIN__)
 	if(argc == 2){
 		if(!strcmp(argv[1], "run")){
@@ -489,7 +490,11 @@ int mosquitto_broker_main(int argc, char *argv[], int (*pw_callback)(char* buf, 
 
 	config__init(&config);
 	rc = config__parse_args(&config, argc, argv);
-	if(rc != MOSQ_ERR_SUCCESS) return rc;
+	if(rc == MOSQ_ERR_UNKNOWN){
+		return MOSQ_ERR_SUCCESS;
+	}else if(rc != MOSQ_ERR_SUCCESS){
+		return rc;
+	}
 	db.config = &config;
 
 	rc = keepalive__init();
@@ -620,6 +625,8 @@ int mosquitto_broker_main(int argc, char *argv[], int (*pw_callback)(char* buf, 
 	if(config.pid_file){
 		(void)remove(config.pid_file);
 	}
+
+	mux__cleanup();
 
 	log__close(&config);
 	config__cleanup(db.config);

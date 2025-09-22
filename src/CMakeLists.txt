@@ -119,7 +119,7 @@ if (WITH_EMBEDD_BROKER)
 		add_library(libmosquitto_broker_static STATIC ${BROKER_SRC} embedd_broker.c)
 	endif()
 endif()
-      
+
 broker_include_directories(PUBLIC "${mosquitto_SOURCE_DIR}")
 broker_include_directories(PUBLIC "${mosquitto_SOURCE_DIR}/include")
 broker_include_directories(PRIVATE "${mosquitto_SOURCE_DIR}/common")
@@ -128,17 +128,12 @@ broker_include_directories(PRIVATE "${mosquitto_SOURCE_DIR}/libcommon")
 broker_include_directories(PRIVATE "${mosquitto_SOURCE_DIR}/src")
 
 if(WITH_BUNDLED_DEPS)
-	broker_include_directories(PRIVATE "${mosquitto_SOURCE_DIR}/deps")
-endif()
-
-# CHECK_INCLUDE_FILES(sys/event.h HAVE_SYS_EVENT_H)
-# if(HAVE_SYS_EVENT_H)
-# 	broker_add_compile_definitions(PRIVATE "WITH_KQUEUE")
-# endif()
+    broker_include_directories(PRIVATE "${mosquitto_SOURCE_DIR}/deps")
+endif (WITH_BUNDLED_DEPS)
 
 find_path(HAVE_SYS_EPOLL_H sys/epoll.h)
 if (HAVE_SYS_EPOLL_H)
-	broker_add_compile_definitions(PRIVATE "WITH_EPOLL")
+	broker_add_compile_definitions(PRIVATE "-DWITH_EPOLL")
 endif()
 
 option(INC_BRIDGE_SUPPORT
@@ -146,7 +141,7 @@ option(INC_BRIDGE_SUPPORT
 
 if (INC_BRIDGE_SUPPORT)
 	broker_sources(PRIVATE bridge.c)
-	broker_add_compile_definitions(PRIVATE "WITH_BRIDGE")
+	broker_add_compile_definitions(PRIVATE "-DWITH_BRIDGE")
 endif (INC_BRIDGE_SUPPORT)
 
 
@@ -155,7 +150,7 @@ option(USE_LIBWRAP
 
 if (USE_LIBWRAP)
 	broker_sources(wrap)
-	broker_add_compile_definitions(PRIVATE "WITH_WRAP")
+	broker_add_compile_definitions(PRIVATE "-DWITH_WRAP")
 endif (USE_LIBWRAP)
 
 option(INC_DB_UPGRADE
@@ -164,19 +159,25 @@ option(INC_DB_UPGRADE
 option(INC_MEMTRACK
 	"Include memory tracking support?" ON)
 if (INC_MEMTRACK)
-	broker_add_compile_definitions(PUBLIC "WITH_MEMORY_TRACKING")
+	broker_add_compile_definitions(PUBLIC "-DWITH_MEMORY_TRACKING")
 endif (INC_MEMTRACK)
 
 option(WITH_PERSISTENCE
 	"Include persistence support?" ON)
 if (WITH_PERSISTENCE)
-	broker_add_compile_definitions(PRIVATE "WITH_PERSISTENCE")
+	broker_add_compile_definitions(PRIVATE "-DWITH_PERSISTENCE")
 endif (WITH_PERSISTENCE)
+
+option(WITH_OLD_KEEPALIVE
+	"Use legacy keepalive check mechanism?" OFF)
+if (WITH_OLD_KEEPALIVE)
+    broker_add_compile_definitions("-DWITH_OLD_KEEPALIVE")
+endif (WITH_OLD_KEEPALIVE)
 
 option(WITH_SYS_TREE
 	"Include $SYS tree support?" ON)
 if (WITH_SYS_TREE)
-	broker_add_compile_definitions(PRIVATE "WITH_SYS_TREE")
+	broker_add_compile_definitions(PRIVATE "-DWITH_SYS_TREE")
 endif (WITH_SYS_TREE)
 
 option(WITH_ADNS
@@ -186,7 +187,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL Linux)
 	option(WITH_SYSTEMD
 		"Include systemd support?" OFF)
 	if (WITH_SYSTEMD)
-		broker_add_compile_definitions(PRIVATE "WITH_SYSTEMD")
+		broker_add_compile_definitions(PRIVATE "-DWITH_SYSTEMD")
 		find_library(SYSTEMD_LIBRARY systemd)
 		broker_link_libraries(PRIVATE "${SYSTEMD_LIBRARY}")
 	endif (WITH_SYSTEMD)
@@ -196,37 +197,37 @@ option(WITH_WEBSOCKETS "Include websockets support?" OFF)
 option(STATIC_WEBSOCKETS "Use the static libwebsockets library?" OFF)
 if (WITH_WEBSOCKETS)
 	find_package(libwebsockets)
-	broker_add_compile_definitions(PRIVATE "WITH_WEBSOCKETS")
+	broker_add_compile_definitions(PRIVATE "-DWITH_WEBSOCKETS")
 endif (WITH_WEBSOCKETS)
 
 option(WITH_CONTROL "Include $CONTROL topic support?" ON)
 if (WITH_CONTROL)
-  	broker_add_compile_definitions(PRIVATE "WITH_CONTROL")
+  	broker_add_compile_definitions(PRIVATE "-DWITH_CONTROL")
 endif (WITH_CONTROL)
 
 if (WIN32 OR CYGWIN)
 	broker_sources(PRIVATE service.c)
 endif (WIN32 OR CYGWIN)
 
-broker_add_compile_definitions(PRIVATE "WITH_BROKER")
+broker_add_compile_definitions(PRIVATE "-DWITH_BROKER")
 
 if (WITH_DLT)
     message(STATUS "DLT_LIBDIR = ${DLT_LIBDIR}")
     target_link_directories(mosquitto PRIVATE ${DLT_LIBDIR})
     broker_link_libraries(PRIVATE "${DLT_LIBRARIES}")
-    broker_add_compile_definitions(PRIVATE "WITH_DLT")
+    broker_add_compile_definitions(PRIVATE "-DWITH_DLT")
 endif (WITH_DLT)
 
 if (WITH_TLS)
-        broker_link_libraries(PRIVATE OpenSSL::SSL)
+    broker_link_libraries(PRIVATE OpenSSL::SSL)
 endif (WITH_TLS)
 
 # Check for getaddrinfo_a
 include(CheckLibraryExists)
 check_library_exists(anl getaddrinfo_a  "" HAVE_GETADDRINFO_A)
 if (HAVE_GETADDRINFO_A AND WITH_ADNS)
-	broker_add_compile_definitions(PRIVATE "WITH_ADNS")
-	broker_add_compile_definitions(PRIVATE "HAVE_GETADDRINFO_A")
+	broker_add_compile_definitions(PRIVATE "-DWITH_ADNS")
+	broker_add_compile_definitions(PRIVATE "-DHAVE_GETADDRINFO_A")
 	broker_link_libraries(PRIVATE anl)
 endif (HAVE_GETADDRINFO_A AND WITH_ADNS)
 
@@ -312,7 +313,7 @@ if (WITH_EMBEDD_BROKER)
 		SOVERSION 1
 		POSITION_INDEPENDENT_CODE 1
 	)
-	
+
 	if (WITH_STATIC_LIBRARIES)
 		set_target_properties(libmosquitto_broker_static PROPERTIES
 		OUTPUT_NAME mosquitto_broker_static
@@ -321,8 +322,8 @@ if (WITH_EMBEDD_BROKER)
 		POSITION_INDEPENDENT_CODE 1
 	)
 	endif()
-	
-	
+
+
 	if(APPLE)
 		set_target_properties(libmosquitto_broker PROPERTIES
 			LINK_FLAGS "-exported_symbols_list ${mosquitto_SOURCE_DIR}/src/embedd-broker-macos.syms"
@@ -337,13 +338,13 @@ if (WITH_EMBEDD_BROKER)
 		${mosquitto_SOURCE_DIR}/include/mosquitto/embedded_broker.h
 		DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mosquitto"
 	)
-	
+
 	install(TARGETS libmosquitto_broker
 		RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
 		ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 		LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 	)
-	
+
 	if (WITH_STATIC_LIBRARIES)
 		install(TARGETS libmosquitto_broker_static ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 	endif()
