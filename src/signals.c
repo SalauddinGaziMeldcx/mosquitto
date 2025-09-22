@@ -40,7 +40,7 @@ extern int run;
 
 #ifdef SIGHUP
 /* Signal handler for SIGHUP - flag a config reload. */
-static void handle_sighup(int signal)
+void handle_sighup(int signal)
 {
 	UNUSED(signal);
 
@@ -49,7 +49,7 @@ static void handle_sighup(int signal)
 #endif
 
 /* Signal handler for SIGINT and SIGTERM - just stop gracefully. */
-static void handle_sigint(int signal)
+void handle_sigint(int signal)
 {
 	UNUSED(signal);
 
@@ -57,7 +57,7 @@ static void handle_sigint(int signal)
 }
 
 /* Signal handler for SIGUSR1 - backup the db. */
-static void handle_sigusr1(int signal)
+void handle_sigusr1(int signal)
 {
 	UNUSED(signal);
 
@@ -67,30 +67,12 @@ static void handle_sigusr1(int signal)
 }
 
 /* Signal handler for SIGUSR2 - print subscription / retained tree. */
-static void handle_sigusr2(int signal)
+void handle_sigusr2(int signal)
 {
 	UNUSED(signal);
 
 	flag_tree_print = true;
 }
-
-void signal__setup(void)
-{
-	signal(SIGINT, handle_sigint);
-	signal(SIGTERM, handle_sigint);
-#ifdef SIGHUP
-	signal(SIGHUP, handle_sighup);
-#endif
-#ifndef WIN32
-	signal(SIGUSR1, handle_sigusr1);
-	signal(SIGUSR2, handle_sigusr2);
-	signal(SIGPIPE, SIG_IGN);
-#endif
-#ifdef WIN32
-	CreateThread(NULL, 0, SigThreadProc, NULL, 0, NULL);
-#endif
-}
-
 
 /*
  *

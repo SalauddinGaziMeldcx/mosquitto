@@ -3,10 +3,7 @@
 
 extern int run;
 
-void signal__setup(void) {}
-void signal__flag_check(void) {}
-
-void mosquitto_broker_stop()
-{
-	run = false;
+void mosquitto_broker_stop() {
+    /* Just stop gracefully. */
+    run = 0;
 }
